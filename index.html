@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Assignment Cover Page Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #466EBA;
+            --bg-color: #f8f9fa;
+            --border-color: #dee2e6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Form Styling (Left Panel) */
+        .form-container {
+            width: 400px;
+            background: #D6E4FE;
+            padding: 25px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 1.4rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: #495057;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: transparent;
+            color: #333;
+            border: 1px solid black;
+            outline: var(--border-color);
+            border-radius: 25px;
+            padding: 7px 22px;
+            font-size: var(--border-color);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn-download {
+            width: 100%;
+            padding: 12px;
+            background-color: #466EBA;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+
+        .btn-download:hover {
+            background-color: #003fb4;
+        }
+
+        /* Preview Window (Right Panel) */
+        .preview-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: auto;
+            padding: 40px;
+            background: linear-gradient(45deg, #ebf2ff, #d6e4fe);
+        }
+
+        /* HARD LOCKED Pixel-Perfect A4 Engine Canvas (794px x 1123px = 96 DPI A4) */
+        .a4-page {
+            width: 794px;
+            height: 1123px;
+            min-width: 794px;
+            min-height: 1123px;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            padding: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            position: relative;
+            transform-origin: top center;
+        }
+
+        /* Outer Border Line Frame */
+        .a4-page::after {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            right: 40px;
+            bottom: 40px;
+            border: 1px solid #000;
+            pointer-events: none;
+        }
+
+        /* Top Header Area Elements */
+        .college-header {
+            text-align: center;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .institution-name {
+            font-size: 34px;
+            font-weight: bold;
+            color: #000;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .establishment-year {
+            font-size: 18px;
+            margin-bottom: 25px;
+            color: #000;
+        }
+
+        .logo-placeholder {
+            width: 140px;
+            height: 140px;
+            margin-bottom: 25px;
+            object-fit: contain;
+        }
+
+        .department-name {
+            font-size: 22px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        /* Mid-Section Subject and Title Content */
+        .assignment-info {
+            text-align: center;
+            width: 100%;
+            margin-top: 50px;
+            margin-bottom: auto;
+        }
+
+        .subject-field {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .title-field {
+            font-size: 20px;
+            font-style: italic;
+            line-height: 1.5;
+            color: #111;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+        /* Lower Quadrant Info Block */
+        .meta-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 150px;
+            align-items: flex-start;
+        }
+
+        .meta-box {
+            width: 45%;
+            border: #000 1.5px dashed;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .meta-box h3 {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #000;
+            border-bottom: 1px dotted #000000;
+            padding-bottom: 5px;
+        }
+
+        .meta-box p {
+            font-size: 20px !important;
+            line-height: 1.8;
+            color: #000;
+            margin-bottom: 4px;
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 4px;
+        }
+        .info-row span {
+            font-size: 20px;
+            color: #000;
+            margin-bottom: 4px;
+        }
+
+        .info-label {
+            width: 80px;
+        }
+        .info-val {
+            flex: 1;
+        }
+
+        /* Bottom Centered Submission Statement */
+        .submission-date {
+            font-size: 17px;
+            font-weight: bold;
+            color: #000;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive Design - Desktop Viewport Heights */
+        @media screen and (max-height: 1080px) {
+            .a4-page {
+                transform: scale(0.7);
+                margin-bottom: -330px;
+            }
+        }
+        @media screen and (max-height: 800px) {
+            .a4-page {
+                transform: scale(0.55);
+                margin-bottom: -500px;
+            }
+        }
+
+        /* Responsive Design - Tablet and Mobile Widths */
+        @media screen and (max-width: 1024px) {
+            body {
+                flex-direction: column;
+                height: auto;
+                overflow-y: auto;
+            }
+            .form-container {
+                width: 100%;
+                height: auto;
+                max-height: none;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+                z-index: 20;
+            }
+            .preview-container {
+                padding: 30px 10px;
+                overflow: hidden; 
+            }
+            .a4-page {
+                transform: scale(0.8);
+                margin-bottom: -220px;
+            }
+        }
+        @media screen and (max-width: 800px) {
+            .a4-page {
+                transform: scale(0.65);
+                margin-bottom: -390px;
+            }
+        }
+        @media screen and (max-width: 600px) {
+            .a4-page {
+                transform: scale(0.45);
+                margin-bottom: -610px;
+            }
+        }
+        @media screen and (max-width: 400px) {
+            .a4-page {
+                transform: scale(0.38);
+                margin-bottom: -690px;
+            }
+        }
+
+        /* BULLETPROOF EXPORT MODE:
+           Instead of tricky positioning, we temporarily hide the sidebar 
+           and strip all centering/scaling so the page is the only thing rendering 
+           exactly at coordinate 0,0 in the normal document flow.
+        */
+        body.exporting .form-container {
+            display: none !important;
+        }
+        
+        body.exporting .preview-container {
+            display: block !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            background: white !important;
+        }
+
+        body.exporting .a4-page {
+            transform: none !important;
+            margin: 0 !important;
+            box-shadow: none !important;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Assignment Cover Generator</h2>
+        
+        <div class="form-group">
+            <label for="inputDept">Department Name</label>
+            <input type="text" id="inputDept" value="Department of Marketing" oninput="updatePreview()">
+        </div>
+
+        <div class="form-group">
+            <label for="inputSubject">Subject Name</label>
+            <input type="text" id="inputSubject" value="" placeholder="Bolo Bolo" oninput="updatePreview()">
+        </div>
+
+        <div class="form-group">
+            <label for="inputTitle">Assignment Title</label>
+            <input type="text" id="inputTitle" value="" placeholder="Importance of nothing naki?" oninput="updatePreview()">
+        </div>
+
+        <hr style="margin: 15px 0; border: 0; border-top: 1px solid var(--border-color);">
+        <h3 style="font-size: 0.95rem; margin-bottom: 10px; color: #555;">Submitted By</h3>
+
+        <div class="form-group">
+            <label for="inputName">Student Name</label>
+            <input type="text" id="inputName" value="..." oninput="updatePreview()">
+        </div>
+
+        <div class="form-group">
+            <label for="inputRoll">Roll No</label>
+            <input type="text" id="inputRoll" placeholder="223..." value="" oninput="updatePreview()">
+        </div>
+
+        <div class="form-group">
+            <label for="inputSession">Session / Section</label>
+            <input type="text" id="inputSession" value="2025-26" oninput="updatePreview()">
+        </div>
+
+        <hr style="margin: 15px 0; border: 0; border-top: 1px solid var(--border-color);">
+        <h3 style="font-size: 0.95rem; margin-bottom: 10px; color: #555;">Submitted To</h3>
+
+        <div class="form-group">
+            <label for="inputTeacher">Teacher Name</label>
+            <input type="text" id="inputTeacher" value="..." oninput="updatePreview()">
+        </div>
+
+        <div class="form-group">
+            <label for="inputDesignation">Designation</label>
+            <input type="text" id="inputDesignation" value="Lecturer" oninput="updatePreview()">
+        </div>
+
+        <div class="form-group">
+            <label for="inputTeacherDept">Teacher's Dept/Inst.</label>
+            <input type="text" id="inputTeacherDept" value="Dept. of Marketing, RC" oninput="updatePreview()">
+        </div>
+
+        <hr style="margin: 15px 0; border: 0; border-top: 1px solid var(--border-color);">
+
+        <div class="form-group">
+            <label for="inputDate">Submission Date</label>
+            <input type="date" id="inputDate" onchange="updatePreview()">
+        </div>
+
+        <button class="btn-download" onclick="generatePDF()">Download A4 PDF</button>
+    </div>
+
+    <div class="preview-container" id="previewContainer">
+        <div class="a4-page" id="coverPage">
+            
+            <div class="college-header">
+                <div class="institution-name">Rajshahi College</div>
+                <img class="logo-placeholder" src="Rajshahi_College_Logo.svg" alt="Rajshahi College Logo">
+                <div class="department-name" id="viewDept">Department of Marketing</div>
+            </div>
+
+            <div class="assignment-info">
+                <div class="subject-field">Subject: <span id="viewSubject">Mundu</span></div>
+                <div class="title-field">Title: <span id="viewTitle">Importance of nothing</span></div>
+            </div>
+
+            <div class="meta-container">
+                <div class="meta-box">
+                    <h3>Submitted By:</h3>
+                    <b><p id="viewName" style=" margin-bottom: 4px;">...</p></b>
+                    <div class="info-row">
+                        <span class="info-label">Roll:</span>
+                        <span class="info-val" id="viewRoll">223...</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Session:</span>
+                        <span class="info-val" id="viewSession">2025-26</span>
+                    </div>
+                </div>
+                
+                <div class="meta-box">
+                    <h3>Submitted To:</h3>
+                    <b><p id="viewTeacher" style=" margin-bottom: 4px;">Hobe Kisu Ekta</p></b>
+                    <p id="viewDesignation" style="margin-bottom: 4px;">Lecturer</p>
+                    <p id="viewTeacherDept">Dept. of Marketing, RC</p>
+                </div>
+            </div>
+
+            <div class="submission-date">
+                Date of Submission: <span id="viewDate">04 January 2026</span>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function formatDate(dateString) {
+            if (!dateString) return "";
+
+            const date = new Date(dateString);
+
+            const options = {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            };
+
+            return date.toLocaleDateString("en-GB", options);
+        }
+
+
+        function updatePreview() {
+            document.getElementById('viewDept').innerText = document.getElementById('inputDept').value;
+            document.getElementById('viewSubject').innerText = document.getElementById('inputSubject').value;
+            document.getElementById('viewTitle').innerText = document.getElementById('inputTitle').value;
+            document.getElementById('viewName').innerText = document.getElementById('inputName').value;
+            document.getElementById('viewRoll').innerText = document.getElementById('inputRoll').value;
+            document.getElementById('viewSession').innerText = document.getElementById('inputSession').value;
+            document.getElementById('viewTeacher').innerText = document.getElementById('inputTeacher').value;
+            document.getElementById('viewDesignation').innerText = document.getElementById('inputDesignation').value;
+            document.getElementById('viewTeacherDept').innerText = document.getElementById('inputTeacherDept').value;
+
+            // formatted date
+            document.getElementById('viewDate').innerText =
+                formatDate(document.getElementById('inputDate').value);
+        }
+
+        function generatePDF() {
+            // 1. Add the exporting class to the body. This safely aligns the element to 0,0 
+            // by disabling the flexbox layout and hiding the sidebar natively.
+            document.body.classList.add('exporting');
+            
+            const element = document.getElementById('coverPage');
+            const rollNumber = document.getElementById('inputRoll').value || 'CoverPage';
+            
+            // 2. Wait 100ms for the browser to properly repaint the DOM before taking the snapshot
+            setTimeout(() => {
+                const opt = {
+                    margin:       0,
+                    filename:     'Cover_Page_' + rollNumber + '.pdf',
+                    image:        { type: 'jpeg', quality: 1.0 },
+                    html2canvas:  { 
+                        scale: 2, 
+                        useCORS: true, 
+                        logging: false,
+                        scrollX: 0, 
+                        scrollY: 0
+                    },
+                    jsPDF:        { unit: 'px', format: [794, 1123], orientation: 'portrait' }
+                };
+
+                // 3. Generate PDF and immediately remove the exporting class to restore the UI
+                html2pdf().set(opt).from(element).save().then(() => {
+                    document.body.classList.remove('exporting');
+                });
+            }, 100);
+        }
+
+        // Set today's date automatically
+        window.onload = function() {
+            const today = new Date();
+
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+
+            document.getElementById('inputDate').value =
+                `${yyyy}-${mm}-${dd}`;
+
+            updatePreview();
+        };
+    </script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>
