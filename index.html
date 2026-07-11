@@ -393,7 +393,7 @@
         </div>
 
         <button class="btn-download" onclick="generatePDF()">Download A4 PDF</button>
-        <p style="padding: 20px; font-size: 12px; color: #003fb4; text-align: center;">[by Raffsun]</p>
+        <p style="padding: 20px; font-size: 12px; color: #003fb4; text-align: center;">[Created by <a style="text-decoration: none; color: #003fb4" href="https://wa.me/8801774994794"><b>Raffsun Zany</b></a>]</p>
     </div>
 
     <div class="preview-container" id="previewContainer">
@@ -591,6 +591,23 @@
 		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
 	}
 	// ]]>
+</script>
+<script>
+    // Disable Right-Click
+    document.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+    });
+
+    // Disable Keyboard Shortcuts (F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U)
+    document.addEventListener('keydown', function (e) {
+    if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+        (e.ctrlKey && e.key === 'u')
+    ) {
+        e.preventDefault();
+    }
+    });
 </script>
 </body>
 </html>
