@@ -279,7 +279,7 @@
             position: relative;
         }
 
-        /* Cover Page Themes (Preserved exact internal specs) */
+        /* Cover Page Themes */
         .theme-classic { padding: 80px; align-items: center; }
         .theme-classic::after { content: ''; position: absolute; top: 40px; left: 40px; right: 40px; bottom: 40px; border: 1px solid #000; pointer-events: none; }
         .theme-classic .college-header { text-align: center; width: 100%; margin-top: 30px; }
@@ -367,6 +367,12 @@
         .theme-modern .submission-date { font-size: 15px; font-weight: 600; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 15px; display: flex; justify-content: space-between; }
 
         /* Full Responsive Design */
+        @media screen and (max-width: 768px) {
+            .zoom-controls {
+                display: none !important;
+            }
+        }
+
         @media screen and (max-width: 1024px) {
             body {
                 flex-direction: column;
@@ -418,10 +424,10 @@
         
         <div class="section-label">Select Theme</div>
         <div class="theme-buttons">
-            <button type="button" class="btn-theme active" onclick="switchTheme('classic', this)">Cover-1</button>
-            <button type="button" class="btn-theme" onclick="switchTheme('standard', this)">Cover-2</button>
-            <button type="button" class="btn-theme" onclick="switchTheme('royal', this)">Cover-3</button>
-            <button type="button" class="btn-theme" onclick="switchTheme('modern', this)">Cover-4</button>
+            <button type="button" class="btn-theme active" onclick="switchTheme('classic', this)">Classic</button>
+            <button type="button" class="btn-theme" onclick="switchTheme('standard', this)">Standard</button>
+            <button type="button" class="btn-theme" onclick="switchTheme('royal', this)">Royal</button>
+            <button type="button" class="btn-theme" onclick="switchTheme('modern', this)">Modern</button>
         </div>
 
         <div class="section-label">General Details</div>
@@ -486,9 +492,9 @@
 
     <div class="preview-wrapper">
         <div class="zoom-controls">
-            <button class="zoom-btn" onclick="zoomOut()" title="Zoom Out">-</button>
-            <span class="zoom-level" id="zoomLevelText">65%</span>
             <button class="zoom-btn" onclick="zoomIn()" title="Zoom In">+</button>
+            <span class="zoom-level" id="zoomLevelText">65%</span>
+            <button class="zoom-btn" onclick="zoomOut()" title="Zoom Out">-</button>
             <button class="zoom-btn" onclick="resetZoom()" title="Reset Zoom" style="width: auto; padding: 0 10px; border-radius: 15px; font-size: 0.75rem;">Reset</button>
         </div>
 
@@ -502,7 +508,7 @@
     <script>
         let currentTheme = 'classic';
         let currentZoom = 0.65;
-        const MIN_ZOOM = 0.3;
+        const MIN_ZOOM = 0.2;
         const MAX_ZOOM = 1.5;
         const ZOOM_STEP = 0.05;
 
@@ -511,11 +517,12 @@
             const zoomText = document.getElementById('zoomLevelText');
             
             scaler.style.transform = `scale(${currentZoom})`;
-            zoomText.innerText = `${Math.round(currentZoom * 100)}%`;
+            if (zoomText) zoomText.innerText = `${Math.round(currentZoom * 100)}%`;
             scaler.style.marginBottom = `${-(1123 * (1 - currentZoom))}px`;
         }
 
         function zoomIn() {
+            if (window.innerWidth <= 768) return;
             if (currentZoom < MAX_ZOOM) {
                 currentZoom = Math.min(MAX_ZOOM, currentZoom + ZOOM_STEP);
                 applyZoom();
@@ -523,6 +530,7 @@
         }
 
         function zoomOut() {
+            if (window.innerWidth <= 768) return;
             if (currentZoom > MIN_ZOOM) {
                 currentZoom = Math.max(MIN_ZOOM, currentZoom - ZOOM_STEP);
                 applyZoom();
@@ -534,14 +542,18 @@
         }
 
         function autoFitZoom() {
-            const container = document.getElementById('previewContainer');
-            if (container) {
-                const availableHeight = container.clientHeight - 100;
-                let autoScale = availableHeight / 1123;
-                autoScale = Math.min(Math.max(autoScale, MIN_ZOOM), 0.85);
-                currentZoom = parseFloat(autoScale.toFixed(2));
-                applyZoom();
+            if (window.innerWidth <= 768) {
+                currentZoom = 0.4;
+            } else {
+                const container = document.getElementById('previewContainer');
+                if (container) {
+                    const availableHeight = container.clientHeight - 100;
+                    let autoScale = availableHeight / 1123;
+                    autoScale = Math.min(Math.max(autoScale, MIN_ZOOM), 0.85);
+                    currentZoom = parseFloat(autoScale.toFixed(2));
+                }
             }
+            applyZoom();
         }
 
         function switchTheme(themeName, btnElement) {
@@ -801,6 +813,7 @@
         }
 
         document.getElementById('previewContainer').addEventListener('wheel', function(e) {
+            if (window.innerWidth <= 768) return;
             if (e.ctrlKey) {
                 e.preventDefault();
                 if (e.deltaY < 0) {
