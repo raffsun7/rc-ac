@@ -287,7 +287,7 @@
         .theme-classic .logo-placeholder { width: 140px; height: 140px; margin-bottom: 25px; object-fit: contain; }
         .theme-classic .department-name { font-size: 22px; font-weight: bold; color: #000; }
         .theme-classic .assignment-info { text-align: center; width: 100%; margin-top: 50px; margin-bottom: auto; }
-        .theme-classic .subject-field { font-size: 26px; font-weight: bold; margin-bottom: 15px; color: #000; }
+        .theme-classic .Course-field { font-size: 26px; font-weight: bold; margin-bottom: 15px; color: #000; }
         .theme-classic .title-field { font-size: 20px; font-style: italic; line-height: 1.5; color: #111; max-width: 90%; margin: 0 auto; }
         .theme-classic .meta-container { display: flex; justify-content: space-between; width: 100%; margin-bottom: 150px; align-items: flex-start; }
         .theme-classic .meta-box { width: 45%; border: #000 1.5px dashed; padding: 20px; box-sizing: border-box; }
@@ -306,7 +306,7 @@
         .theme-standard .logo-placeholder { width: 130px; height: 130px; margin-bottom: 20px; object-fit: contain; }
         .theme-standard .department-name { font-size: 22px; font-weight: 600; color: #1e3a8a; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 2px solid #cbd5e1; display: inline-block; padding-bottom: 6px; }
         .theme-standard .assignment-info { text-align: center; width: 100%; margin-top: 30px; margin-bottom: auto; padding: 0 20px; }
-        .theme-standard .subject-field { font-size: 24px; font-weight: 600; margin-bottom: 18px; color: #334155; }
+        .theme-standard .Course-field { font-size: 24px; font-weight: 600; margin-bottom: 18px; color: #334155; }
         .theme-standard .title-container { margin: 20px auto; padding: 24px 30px; background-color: #f8fafc; border-top: 2px solid #1e3a8a; border-bottom: 2px solid #1e3a8a; max-width: 90%; }
         .theme-standard .title-label { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #2563eb; margin-bottom: 8px; display: block; }
         .theme-standard .title-field { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; line-height: 1.4; color: #0f172a; }
@@ -329,8 +329,8 @@
         .theme-royal .department-name { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 600; color: #b45309; text-transform: uppercase; letter-spacing: 2px; }
         .theme-royal .header-divider { width: 120px; height: 2px; background: linear-gradient(to right, transparent, #b45309, transparent); margin: 15px auto 0; }
         .theme-royal .assignment-info { text-align: center; width: 100%; margin-top: 30px; margin-bottom: auto; padding: 0 40px; }
-        .theme-royal .subject-field { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 500; color: #0f172a; margin-bottom: 25px; }
-        .theme-royal .subject-field span { font-family: 'Cormorant Garamond', serif; color: #1e293b; font-weight: 700; }
+        .theme-royal .Course-field { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 500; color: #0f172a; margin-bottom: 25px; }
+        .theme-royal .Course-field span { font-family: 'Cormorant Garamond', serif; color: #1e293b; font-weight: 700; }
         .theme-royal .title-container { position: relative; padding: 25px 30px; margin: 15px auto; max-width: 90%; background: #ffffff; border-top: 1px dashed #b45309; border-bottom: 1px dashed #b45309; }
         .theme-royal .title-label { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; color: #b45309; margin-bottom: 10px; display: block; }
         .theme-royal .title-field { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; line-height: 1.35; color: #1e293b; }
@@ -353,7 +353,7 @@
         .theme-modern .logo-placeholder { width: 100px; height: 100px; object-fit: contain; margin-left: 20px; }
         .theme-modern .assignment-info { margin-top: 40px; margin-bottom: auto; }
         .theme-modern .assignment-badge { display: inline-block; background: #f1f5f9; color: #0f172a; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; padding: 6px 14px; border-left: 3px solid #0d9488; margin-bottom: 25px; }
-        .theme-modern .subject-field { font-size: 22px; font-weight: 600; color: #1e293b; margin-bottom: 20px; }
+        .theme-modern .Course-field { font-size: 22px; font-weight: 600; color: #1e293b; margin-bottom: 20px; }
         .theme-modern .title-container { margin-top: 15px; }
         .theme-modern .title-label { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #64748b; margin-bottom: 8px; display: block; }
         .theme-modern .title-field { font-family: 'Merriweather', serif; font-size: 26px; font-weight: 700; line-height: 1.4; color: #0f172a; background: #f8fafc; padding: 20px; border-left: 4px solid #0f172a; }
@@ -437,8 +437,8 @@
         </div>
 
         <div class="form-group">
-            <label for="inputSubject">Subject Name</label>
-            <input type="text" id="inputSubject" value="" placeholder="e.g. Marketing Management" oninput="updatePreview()">
+            <label for="inputCourse">Course Name</label>
+            <input type="text" id="inputCourse" value="" placeholder="e.g. Marketing Management" oninput="updatePreview()">
         </div>
 
         <div class="form-group">
@@ -575,7 +575,7 @@
                         <div class="department-name" id="viewDept">Department of Marketing</div>
                     </div>
                     <div class="assignment-info">
-                        <div class="subject-field" id="subjectWrapper">Subject: <span id="viewSubject"></span></div>
+                        <div class="Course-field" id="CourseWrapper">Course: <span id="viewCourse"></span></div>
                         <div class="title-field" id="titleWrapper">Title: <span id="viewTitle"></span></div>
                     </div>
                     <div class="meta-container">
@@ -612,7 +612,7 @@
                         <div class="department-name" id="viewDept">Department of Marketing</div>
                     </div>
                     <div class="assignment-info">
-                        <div class="subject-field" id="subjectWrapper">Subject: <span id="viewSubject"></span></div>
+                        <div class="Course-field" id="CourseWrapper">Course: <span id="viewCourse"></span></div>
                         <div class="title-container" id="titleWrapper">
                             <span class="title-label">Assignment Title</span>
                             <div class="title-field" id="viewTitle"></div>
@@ -652,7 +652,7 @@
                         <div class="header-divider"></div>
                     </div>
                     <div class="assignment-info">
-                        <div class="subject-field" id="subjectWrapper">Subject: <span id="viewSubject"></span></div>
+                        <div class="Course-field" id="CourseWrapper">Course: <span id="viewCourse"></span></div>
                         <div class="title-container" id="titleWrapper">
                             <span class="title-label">Assignment Title</span>
                             <div class="title-field" id="viewTitle"></div>
@@ -694,7 +694,7 @@
                     </div>
                     <div class="assignment-info">
                         <div class="assignment-badge">Academic Assignment</div>
-                        <div class="subject-field" id="subjectWrapper">Subject: <span id="viewSubject"></span></div>
+                        <div class="Course-field" id="CourseWrapper">Course: <span id="viewCourse"></span></div>
                         <div class="title-container" id="titleWrapper">
                             <span class="title-label">Assignment Title</span>
                             <div class="title-field" id="viewTitle"></div>
@@ -741,14 +741,14 @@
             const viewDept = document.getElementById('viewDept');
             if(viewDept) viewDept.innerText = document.getElementById('inputDept').value;
             
-            const subjectValue = document.getElementById('inputSubject').value.trim();
-            const subjectWrapper = document.getElementById('subjectWrapper');
-            if (subjectWrapper) {
-                if (subjectValue) {
-                    subjectWrapper.style.display = 'block';
-                    document.getElementById('viewSubject').innerText = subjectValue;
+            const CourseValue = document.getElementById('inputCourse').value.trim();
+            const CourseWrapper = document.getElementById('CourseWrapper');
+            if (CourseWrapper) {
+                if (CourseValue) {
+                    CourseWrapper.style.display = 'block';
+                    document.getElementById('viewCourse').innerText = CourseValue;
                 } else {
-                    subjectWrapper.style.display = 'none';
+                    CourseWrapper.style.display = 'none';
                 }
             }
 
